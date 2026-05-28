@@ -7,154 +7,68 @@
   html, body {
     margin: 0;
     padding: 0;
-    background: #111;
+    background: transparent;
     overflow: hidden;
     width: 100%;
     height: 100%;
-    font-family: "Arial Rounded MT Bold", "Yu Gothic", "Meiryo", sans-serif;
   }
 
-  .wrap {
-    width: 100vw;
-    height: 100vh;
+  body {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  .timer-box {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 34px;
-    border-radius: 999px;
-    border: 4px solid rgba(255,255,255,.95);
-    background:
-      radial-gradient(circle at 20% 10%, rgba(255,255,255,.95), transparent 18%),
-      radial-gradient(circle at 85% 20%, rgba(255,255,255,.7), transparent 14%),
-      linear-gradient(135deg, #ff8fd3, #ff64bd 45%, #ffc1ea);
-    box-shadow:
-      0 0 10px rgba(255,255,255,.85),
-      0 0 26px rgba(255,105,180,.9),
-      0 0 50px rgba(255,170,230,.75);
-  }
-
-  .label {
-    color: #fff;
-    font-size: 26px;
-    font-weight: 900;
-    letter-spacing: .06em;
-    text-shadow:
-      0 2px 0 rgba(255,90,180,.9),
-      0 0 8px rgba(255,255,255,.9);
-    white-space: nowrap;
+    font-family: "Arial Rounded MT Bold", "Yu Gothic", "Meiryo", sans-serif;
   }
 
   #timer {
-    color: #fff;
-    font-size: 66px;
+    display: inline-block;
+    padding: 8px 24px;
+    border-radius: 999px;
+    border: 3px solid rgba(255,255,255,.95);
+
+    color: #ffffff;
+    font-size: 58px;
     font-weight: 900;
     line-height: 1;
     letter-spacing: .04em;
+
+    background: linear-gradient(135deg, rgba(255,120,205,.95), rgba(255,190,235,.92));
+    box-shadow:
+      0 0 8px rgba(255,255,255,.95),
+      0 0 18px rgba(255,105,180,.95),
+      0 0 32px rgba(255,180,235,.85);
+
     text-shadow:
-      0 3px 0 rgba(180,40,130,.75),
-      0 0 10px rgba(255,255,255,.95);
+      0 2px 0 rgba(190,45,135,.85),
+      0 0 8px rgba(255,255,255,.95);
     white-space: nowrap;
   }
 
   .sparkle {
-    position: absolute;
-    color: white;
-    opacity: .95;
-    text-shadow: 0 0 8px #fff, 0 0 16px #ff8fd3;
-    animation: twinkle 1.8s infinite ease-in-out;
-    pointer-events: none;
-  }
-
-  .s1 { left: 18px; top: 4px; font-size: 18px; animation-delay: 0s; }
-  .s2 { right: 24px; top: 8px; font-size: 16px; animation-delay: .4s; }
-  .s3 { left: 54%; bottom: 3px; font-size: 14px; animation-delay: .8s; }
-
-  @keyframes twinkle {
-    0%, 100% { transform: scale(.75); opacity: .45; }
-    50% { transform: scale(1.15); opacity: 1; }
-  }
-
-  .controls {
-    position: fixed;
-    left: 50%;
-    bottom: 22px;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 12px;
-    z-index: 10;
-  }
-
-  button {
-    border: 3px solid white;
-    border-radius: 999px;
-    padding: 10px 24px;
-    font-size: 18px;
-    font-weight: 900;
-    cursor: pointer;
-    background: linear-gradient(135deg, #ff75c8, #ffaadf);
-    color: white;
-    box-shadow: 0 0 15px rgba(255,105,180,.8);
-  }
-
-  button:hover {
-    transform: scale(1.04);
-  }
-
-  .hidden {
-    display: none !important;
-  }
-
-  .hint {
-    position: fixed;
-    left: 50%;
-    bottom: 78px;
-    transform: translateX(-50%);
-    color: rgba(255,255,255,.85);
-    font-size: 14px;
-    text-align: center;
-    white-space: nowrap;
+    color: #fff;
+    text-shadow:
+      0 0 8px #fff,
+      0 0 16px #ff8fd3;
   }
 </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <div class="timer-box">
-      <span class="sparkle s1">✦</span>
-      <span class="sparkle s2">✧</span>
-      <span class="sparkle s3">♡</span>
-      <div class="label">配信時間</div>
-      <div id="timer">00:00:00</div>
-    </div>
-  </div>
-
-  <div id="hint" class="hint">開始を押すと操作ボタンは自動で隠れます / Hキーで表示・非表示</div>
-
-  <div id="controls" class="controls">
-    <button onclick="startTimer()">▶ 開始</button>
-    <button onclick="pauseTimer()">⏸ 停止</button>
-    <button onclick="resetTimer()">🔄 リセット</button>
+  <div id="timer">
+    <span class="sparkle">♡</span> 00:00:00 <span class="sparkle">♡</span>
   </div>
 
 <script>
   let seconds = 0;
   let interval = null;
 
-  const timerEl = document.getElementById("timer");
-  const controlsEl = document.getElementById("controls");
-  const hintEl = document.getElementById("hint");
-
   function updateDisplay() {
     const h = String(Math.floor(seconds / 3600)).padStart(2, "0");
     const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
     const s = String(seconds % 60).padStart(2, "0");
-    timerEl.textContent = `${h}:${m}:${s}`;
+
+    document.getElementById("timer").innerHTML =
+      `<span class="sparkle">♡</span> ${h}:${m}:${s} <span class="sparkle">♡</span>`;
   }
 
   function startTimer() {
@@ -163,9 +77,6 @@
       seconds++;
       updateDisplay();
     }, 1000);
-
-    controlsEl.classList.add("hidden");
-    hintEl.classList.add("hidden");
   }
 
   function pauseTimer() {
@@ -182,12 +93,6 @@
 
   document.addEventListener("keydown", (e) => {
     const key = e.key.toLowerCase();
-
-    if (key === "h") {
-      controlsEl.classList.toggle("hidden");
-      hintEl.classList.toggle("hidden");
-    }
-
     if (key === "s") startTimer();
     if (key === "p") pauseTimer();
     if (key === "r") resetTimer();
